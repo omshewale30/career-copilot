@@ -1,0 +1,20 @@
+TODO:
+1. add the job search feature
+    Basic functionality:
+    -get user location from resume
+    -get user skills from resume
+    -search for relevant jobs using duckduckgo tool
+    -display the results in a table
+2. Auth page
+3. resume builder
+
+
+
+
+
+***Future Work***
+1. Add database support
+2. Add authentication
+
+***Future Features***
+1. Add cv text to pdf
