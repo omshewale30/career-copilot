@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { ChevronRight, Briefcase, Star, BarChart, Github, Twitter, Linkedin } from "lucide-react"
-import home from "./Home.jsx";
 
 
 const LandingPage = () => {
@@ -62,9 +61,13 @@ const LandingPage = () => {
                             Pricing
                         </a>
                     </nav>
-                    <button className="hidden md:block bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg text-white px-5 py-2 rounded-full hover:bg-opacity-30 transition-all duration-300 font-medium">
-                        Sign In
+                    <button className="hidden md:block bg-white/30 backdrop-blur-md backdrop-saturate-150 text-white px-5 py-2 rounded-full shadow-md hover:bg-white/40 transition-all duration-300 font-medium border border-white/40">
+                      Sign In
                     </button>
+
+
+
+
                     <button className="md:hidden text-white">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +122,7 @@ const LandingPage = () => {
                             Get Started
                             <ChevronRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
                         </button>
-                        <button className="px-8 py-4 bg-white bg-opacity-20 backdrop-filter backdrop-blur-lg text-white font-bold rounded-full hover:bg-opacity-30 transition-all duration-300">
+                        <button className="px-8 py-4 bg-gradient-to-r from-blue-400 to-indigo-700 text-white font-bold rounded-full hover:bg-opacity-30 transition-all duration-300">
                             Learn More
                         </button>
                     </motion.div>
@@ -131,17 +134,18 @@ const LandingPage = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.6, duration: 0.6 }}
                     >
-                        <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6 hover:bg-opacity-15 transition-all duration-300 border border-white border-opacity-20">
+                        <div className="bg-white/20 backdrop-blur-lg backdrop-saturate-150 rounded-2xl p-6 hover:bg-white/30 transition-all duration-300 border border-white/30 shadow-md">
                             <div className="bg-blue-500 bg-opacity-20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
-                                <Briefcase className="w-6 h-6 text-blue-200" />
-                            </div>
-                            <h3 className="text-xl font-bold text-white mb-2">Resume Builder</h3>
-                            <p className="text-blue-100">
-                                Create professional resumes tailored to your target roles with AI assistance.
-                            </p>
+                            <Briefcase className="w-6 h-6 text-blue-100" />
+                          </div>
+                          <h3 className="text-xl font-bold text-white mb-2">Resume Builder</h3>
+                          <p className="text-gray-800">
+                            Create professional resumes tailored to your target roles with AI assistance.
+                          </p>
                         </div>
 
-                        <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6 hover:bg-opacity-15 transition-all duration-300 border border-white border-opacity-20">
+
+                          <div className="bg-white/20 backdrop-blur-lg backdrop-saturate-150 rounded-2xl p-6 hover:bg-white/30 transition-all duration-300 border border-white/30 shadow-md">
                             <div className="bg-green-500 bg-opacity-20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                                 <Star className="w-6 h-6 text-green-200" />
                             </div>
@@ -149,7 +153,7 @@ const LandingPage = () => {
                             <p className="text-blue-100">Identify skill gaps and get personalized recommendations for improvement.</p>
                         </div>
 
-                        <div className="bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-2xl p-6 hover:bg-opacity-15 transition-all duration-300 border border-white border-opacity-20">
+                         <div className="bg-white/20 backdrop-blur-lg backdrop-saturate-150 rounded-2xl p-6 hover:bg-white/30 transition-all duration-300 border border-white/30 shadow-md">
                             <div className="bg-purple-500 bg-opacity-20 w-12 h-12 rounded-full flex items-center justify-center mb-4">
                                 <BarChart className="w-6 h-6 text-purple-200" />
                             </div>
