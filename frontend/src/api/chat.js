@@ -12,7 +12,7 @@ export const submitChat = async (userInput) => {
         },
         body: JSON.stringify({
             user_input: userInput,
-            user_id: "default_user",
+            user_id: "cur_user",
         }),
     })
 

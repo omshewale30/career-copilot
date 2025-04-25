@@ -3,6 +3,7 @@ from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
 from backend.app.core.cache import resume_store
+from backend.app.core.cache import latest_cv
 @tool
 def generate_cover_letter(job_description):
     """
@@ -16,7 +17,7 @@ def generate_cover_letter(job_description):
     MODEL = "gpt-4o-mini"
     llm = ChatOpenAI(model=MODEL)
 
-    resume = resume_store.get("default_user", "No resume found.")
+    resume = resume_store.get("cur_user")
     cover_letter_prompt = f"""
     You are an expert career assistant trained in professional writing. Given the user's resume and a job description, your task is to generate a tailored, compelling, and concise cover letter.
     
@@ -45,5 +46,7 @@ def generate_cover_letter(job_description):
     # Generate the cover letter using the LLM
 
     cover_letter = llm.invoke(cover_letter_prompt)
+    latest_cv["default user"] = cover_letter.content
+
 
     return cover_letter.content

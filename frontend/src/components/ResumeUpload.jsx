@@ -30,7 +30,8 @@ const ResumeUpload = ({ onUploadSuccess }) => {
         setError("")
 
         try {
-            await uploadResume(file)
+            const res = await uploadResume(file,)
+            console.log(res)
             onUploadSuccess()
         } catch (err) {
             setError("Failed to upload resume. Please try again.")

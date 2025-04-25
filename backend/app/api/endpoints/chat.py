@@ -7,7 +7,7 @@ router = APIRouter()
 
 class ChatInput(BaseModel):
     user_input: str
-    user_id: str = "default_user"
+    user_id: str = "cur_user"
 
 
 @router.post("/submit")
@@ -20,6 +20,7 @@ async def call_agent(data: ChatInput):
     user_id = data.user_id
     user_input = data.user_input
     resume = resume_store.get(user_id, "No resume found.")
+    print("I am in the chat endpoint this is the resume", resume)
 
     if resume == "No resume found.":
         return {"error": "No resume found."}

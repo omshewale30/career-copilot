@@ -13,6 +13,7 @@ from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel
 from langchain_community.tools import BraveSearch
 from langchain_community.tools import DuckDuckGoSearchResults
+from backend.app.tools.text_to_pdf import text_to_pdf
 
 # Load environment variables from .env file
 load_dotenv(override=True)
@@ -26,6 +27,7 @@ class CoverLetterResponse(BaseModel):
 
 # Define the tools you want the agent to use
 tools = [
+    Tool(name="TextToPDF", func=text_to_pdf, description=" Does not take any input. Converts cover letter text stored in cache into PDF, saves it, and returns the file path.", return_direct=True),
     Tool(name="GetResumeText", func=get_resume_text,
          description="Get the resume text for the user from the resume store."),
     Tool(name="GenerateCoverLetter", func=generate_cover_letter,
@@ -77,30 +79,9 @@ async def get_agent_response(user_input):
     # Return the agent's response
     return raw_response['output']
 
-# if __name__ == "__main__":
-#     # Example usage
-#     user_input = ("Can you help me write a cover letter for this job description?"
-#                   """
-#                   About the job
-# Overview
-#
-# We are seeking a full-time Software Engineering Intern in our Chandler, AZ location. In this role, you will be responsible for learning and training to develop software for Garmin's communication and navigation products under supervision.
-#
-# Essential Functions
-#
-# Learn to develop software using C#, .NET or other selected languages
-# Learn to test software using debuggers, emulators, simulators, and logic analyzers
-# Learn to perform software releases and software quality assurance activities
-# Learn to perform maintenance activities for products already in production in addition to new product software design
-#
-#
-# Basic Qualifications
-#
-# Completed coursework in Computer Science, Electrical Engineering, Computer Engineering, or a related field
-# Excellent academics (cumulative GPA greater than or equal to 3.0 as a general rule)
-# Must possess relevant experience and/or training in languages such as C, C++, C# or Java
-# Must possess relevant experience and/or training in data structures or object oriented design methodology
-# """)
-#     response = get_agent_response(user_input)
-#     print(response)
+if __name__ == "__main__":
+    # Example usage
+    user_input = (" please make a cover letter stored in the cache into pdf")
+    response = get_agent_response(user_input)
+    print(response)
 

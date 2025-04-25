@@ -2,12 +2,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from "react"
 import { Eye, EyeOff, User, Mail, Lock, ArrowRight } from "lucide-react"
+import {signUp} from "../api/auth.js";
+import {signIn} from "../api/auth.js";
 
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState("login")
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const navigate = useNavigate()
+  const [loginError, setLoginError] = useState(null)
+  const [signupError, setSignupError] = useState(null)
+
   // Login form state
   const [loginData, setLoginData] = useState({
     email: "",
@@ -17,7 +22,8 @@ const AuthPage = () => {
 
   // Signup form state
   const [signupData, setSignupData] = useState({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -41,20 +47,53 @@ const AuthPage = () => {
     })
   }
 
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
     e.preventDefault()
     console.log("Login submitted:", loginData)
-    // Add your login logic here
+    try {
+      const data = await signIn(loginData.email, loginData.password)
+      if (data) {
+        console.log("Login successful:", data)
+        console.log("User session token:", data['access_token'])
+        localStorage.setItem("accessToken", data['access_token'])
+        localStorage.setItem("hasResume", data['has_resume'])
+        localStorage.setItem("isGuest","false")
+        console.log("User session token:", localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "No token found")
+        navigate('/home')
+      }
+
+    }
+    catch (error) {
+      console.error("Login error:", error)
+        setLoginError(error.message)
+      // Handle login error (e.g., show a message to the user)
+    }
   }
 
-  const handleSignupSubmit = (e) => {
+  const handleSignupSubmit = async (e) => {
     e.preventDefault()
     console.log("Signup submitted:", signupData)
-    // Add your signup logic here
+    try{
+        const data = await signUp(signupData.firstName, signupData.lastName,signupData.email, signupData.password)
+        if (data) {
+            console.log("Signup successful:", data)
+            console.log("User session token:", data['access_token'])
+            localStorage.setItem("accessToken", data['access_token'])
+
+            navigate('/home')
+        }
+    }
+    catch (error) {
+        console.error("Signup error:", error)
+        setSignupError(error.message)
+        // Handle signup error (e.g., show a message to the user)
+    }
   }
 
   const handleGuestContinue = () => {
     console.log("Continuing as guest")
+    localStorage.setItem("isGuest", "true")
+    localStorage.setItem("hasResume", "false")
     navigate('/home')
     // Add your guest login logic here
   }
@@ -175,7 +214,11 @@ const AuthPage = () => {
                   </button>
                 </div>
               </form>
-            )}
+              )}
+              {loginError && (
+              <div className="mt-4 text-sm text-red-600">{loginError}</div>
+              )}
+
 
             {/* Signup Form */}
             {activeTab === "signup" && (
@@ -318,6 +361,11 @@ const AuthPage = () => {
                 </div>
               </form>
             )}
+            {signupError && (
+                <div className="mt-4 text-sm text-red-600">{signupError}</div>
+                )}
+
+
 
             {/* Divider */}
             <div className="mt-6">

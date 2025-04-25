@@ -3,18 +3,16 @@
  * @param {File} file - The resume PDF file
  * @returns {Promise} - Promise that resolves when upload is complete
  */
-export const uploadResume = async (file) => {
-    const formData = new FormData()
-    formData.append("file", file)
+export const getProfile = async () => {
+
     const token = localStorage.getItem("accessToken")
 
-    const response = await fetch("http://localhost:8000/resume/upload", {
+    const response = await fetch("http://localhost:8000/profile/", {
 
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
         },
-        body: formData,
     })
 
 

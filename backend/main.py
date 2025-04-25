@@ -4,6 +4,7 @@ from fastapi import FastAPI
 from app.api.routes import router as api_router
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,14 +37,12 @@ app.add_middleware(
 
 app.include_router(api_router)
 
+#app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Career Copilot API"}
 
-
-@app.get("/hello/{name}")
-async def say_hello(name: str):
-    return {"message": f"Hello {name}"}
 
 

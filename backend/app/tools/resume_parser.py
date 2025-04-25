@@ -17,9 +17,5 @@ def extract_text_from_pdf(bytes_data):
         pages = loader.load()
         full_text = ".\n".join([page.page_content for page in pages])
 
-
-
-
-    print(full_text)
     return full_text
 
