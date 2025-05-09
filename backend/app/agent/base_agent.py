@@ -14,7 +14,7 @@ from pydantic import BaseModel
 from app.tools.resume_variant_generator import generate_resume_variant
 
 from langchain_community.tools import DuckDuckGoSearchResults
-from app.tools.text_to_pdf import text_to_pdf
+# from app.tools.text_to_pdf import text_to_pdf
 
 # Load environment variables from .env file
 load_dotenv(override=True)
@@ -28,7 +28,7 @@ class CoverLetterResponse(BaseModel):
 
 # Define the tools you want the agent to use
 tools = [
-    Tool(name="TextToPDF", func=text_to_pdf, description=" Does not take any input. Converts cover letter text stored in cache into PDF, saves it, and returns the file path.", return_direct=True),
+    #Tool(name="TextToPDF", func=text_to_pdf, description=" Does not take any input. Converts cover letter text stored in cache into PDF, saves it, and returns the file path.", return_direct=True),
     resume_tool,  # Use the structured resume tool
     Tool(name="GenerateCoverLetter", func=generate_cover_letter,
             description='''Use this tool to generate a cover letter when the user asks for a cover letter. The resume for the user is already stored in the cache, 
