@@ -62,6 +62,7 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
     const [input, setInput] = useState("")
     const [loading, setLoading] = useState(false)
     const messagesEndRef = useRef(null)
+    const textareaRef = useRef(null)
     const [localMessages, setLocalMessages] = useState(initialMessages || [])
 
     // Sync local messages with parent state
@@ -73,6 +74,14 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
     useEffect(() => {
         scrollToBottom()
     }, [localMessages])
+
+    // Auto-resize textarea
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto'
+            textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px'
+        }
+    }, [input])
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
@@ -145,7 +154,8 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
     }
 
     return (
-        <div className="flex flex-col h-[600px]">
+        <div className="flex flex-col h-screen">
+            {/* Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {localMessages.map((message, index) => (
                     <MessageBubble key={index} message={message} />
@@ -175,15 +185,23 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <form onSubmit={handleSubmit} className="border-t p-4">
+            {/* Input Form */}
+            <form onSubmit={handleSubmit} className="border-t p-4 bg-white">
                 <div className="flex space-x-2">
-                    <input
-                        type="text"
+                    <textarea
+                        ref={textareaRef}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault()
+                                handleSubmit(e)
+                            }
+                        }}
                         placeholder="Type your message..."
-                        className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[40px] max-h-[200px] overflow-y-auto"
                         disabled={loading}
+                        rows={1}
                     />
                     <button
                         type="submit"
