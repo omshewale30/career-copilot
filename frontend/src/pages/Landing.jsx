@@ -14,11 +14,22 @@ const LandingPage = () => {
         navigate('/auth')
     }
 
+    const handleSignIn = () => {
+        navigate('/Auth')
+    }
+
     useEffect(() => {
+        const accessToken = localStorage.getItem('accessToken')
+        if (accessToken) {
+            // User is already logged in, redirect to home page
+            navigate('/home', { replace: true })
+        }
+
         // Simulate loading time
         const timer = setTimeout(() => {
             setIsLoaded(true)
         }, 800)
+
 
         return () => clearTimeout(timer)
     }, [])
@@ -61,7 +72,7 @@ const LandingPage = () => {
                             Pricing
                         </a>
                     </nav>
-                    <button className="hidden md:block bg-white/30 backdrop-blur-md backdrop-saturate-150 text-white px-5 py-2 rounded-full shadow-md hover:bg-white/40 transition-all duration-300 font-medium border border-white/40">
+                    <button className="hidden md:block bg-white/30 backdrop-blur-md backdrop-saturate-150 text-white px-5 py-2 rounded-full shadow-md hover:bg-white/40 transition-all duration-300 font-medium border border-white/40" onClick={handleSignIn}>
                       Sign In
                     </button>
 

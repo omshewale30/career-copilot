@@ -1,4 +1,4 @@
-from backend.app.auth.user_auth import sign_in
+from app.auth.user_auth import sign_in
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 

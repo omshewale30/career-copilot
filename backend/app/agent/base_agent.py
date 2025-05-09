@@ -7,13 +7,14 @@ from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder, HumanMessagePromptTemplate
 from langchain.tools import Tool
 # noinspection PyUnresolvedReferences
-from backend.app.tools.get_resume_text import get_resume_text
-from backend.app.tools.generate_cover_letter import generate_cover_letter
+from app.tools.get_resume_text import get_resume_text, resume_tool
+from app.tools.generate_cover_letter import generate_cover_letter
 from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel
-from langchain_community.tools import BraveSearch
+from app.tools.resume_variant_generator import generate_resume_variant
+
 from langchain_community.tools import DuckDuckGoSearchResults
-from backend.app.tools.text_to_pdf import text_to_pdf
+from app.tools.text_to_pdf import text_to_pdf
 
 # Load environment variables from .env file
 load_dotenv(override=True)
@@ -28,13 +29,17 @@ class CoverLetterResponse(BaseModel):
 # Define the tools you want the agent to use
 tools = [
     Tool(name="TextToPDF", func=text_to_pdf, description=" Does not take any input. Converts cover letter text stored in cache into PDF, saves it, and returns the file path.", return_direct=True),
-    Tool(name="GetResumeText", func=get_resume_text,
-         description="Get the resume text for the user from the resume store."),
+    resume_tool,  # Use the structured resume tool
     Tool(name="GenerateCoverLetter", func=generate_cover_letter,
             description='''Use this tool to generate a cover letter when the user asks for a cover letter. The resume for the user is already stored in the cache, 
                         user does not need to provide the resume. The input to this tool is job description which the user will provide. The output will be a plain text cover letter.''',
          return_direct=True),
-    DuckDuckGoSearchResults()
+    DuckDuckGoSearchResults(),
+    Tool(name="GenerateResumeVariant", func=generate_resume_variant,
+         description='''Use this tool to generate a resume improvement suggestions when the user asks for resume improvement suggestions or how to improve their resume. The input to this tool is resume in json format and job description. The output will be a json object with the following fields:
+                        - job_keywords: the keywords extracted from the job description
+                        - optimization_suggestions: the optimization suggestions for the resume based on the job description''',
+         return_direct=True)
 ]
 
 llm = ChatOpenAI(model=MODEL)
@@ -46,10 +51,18 @@ memory = ConversationBufferMemory(memory_key=MEMORY_KEY, return_messages=True)
 # Define the prompt template to be used by the agent
 prompt = ChatPromptTemplate.from_messages(
     [
-        SystemMessage(content="You are a career copilot agent. Your job is to assist users in writing cover letters based on their resumes and job descriptions, offer career advice. You will use the tools provided to gather information and assist the user. You will also keep track of the conversation history."),
-        MessagesPlaceholder(variable_name="chat_history"),  # Chat history placeholder
-        HumanMessagePromptTemplate.from_template("{query}"),  # Use 'query' instead of 'human_input'
-        MessagesPlaceholder(variable_name="agent_scratchpad"),  # Agent's scratchpad for intermediate steps
+        SystemMessage(content="""You are a career copilot agent. Your job is to assist users in writing cover letters based on their resumes and job descriptions, offer career advice. 
+
+IMPORTANT INSTRUCTIONS:
+1. The user's resume is automatically loaded when they sign in and stored in the cache.
+2. To access the user's resume, you MUST use the GetResumeText tool - it takes no arguments and returns the resume text.
+3. Do not ask the user to provide their resume - it's already available through the GetResumeText tool.
+4. When you need to analyze or reference the resume, always use the GetResumeText tool first.
+
+You will use the tools provided to gather information and assist the user. You will also keep track of the conversation history."""),
+        MessagesPlaceholder(variable_name="chat_history"),
+        HumanMessagePromptTemplate.from_template("{query}"),
+        MessagesPlaceholder(variable_name="agent_scratchpad"),
     ]
 )
 

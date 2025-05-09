@@ -1,4 +1,4 @@
-from backend.app.auth.user_auth import getuser
+from app.auth.user_auth import getuser
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from app.db.db import supabase

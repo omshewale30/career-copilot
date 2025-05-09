@@ -1,6 +1,6 @@
 "use client"
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Eye, EyeOff, User, Mail, Lock, ArrowRight } from "lucide-react"
 import {signUp} from "../api/auth.js";
 import {signIn} from "../api/auth.js";
@@ -12,6 +12,15 @@ const AuthPage = () => {
   const navigate = useNavigate()
   const [loginError, setLoginError] = useState(null)
   const [signupError, setSignupError] = useState(null)
+  useEffect(() => {
+    // Check if user is already logged in
+    const accessToken = localStorage.getItem("accessToken")
+    if (accessToken) {
+      // User is already logged in, redirect to home page
+      navigate('/home', { replace: true })
+    }
+  })
+
 
   // Login form state
   const [loginData, setLoginData] = useState({
@@ -54,12 +63,14 @@ const AuthPage = () => {
       const data = await signIn(loginData.email, loginData.password)
       if (data) {
         console.log("Login successful:", data)
-        console.log("User session token:", data['access_token'])
+
+        // Store the access token in local storage
         localStorage.setItem("accessToken", data['access_token'])
         localStorage.setItem("hasResume", data['has_resume'])
         localStorage.setItem("isGuest","false")
-        console.log("User session token:", localStorage.getItem("access_token") ? localStorage.getItem("access_token") : "No token found")
-        navigate('/home')
+
+        // Redirect to the home page and replace the current entry in the history stack
+        navigate('/home', { replace: true })
       }
 
     }
@@ -76,11 +87,11 @@ const AuthPage = () => {
     try{
         const data = await signUp(signupData.firstName, signupData.lastName,signupData.email, signupData.password)
         if (data) {
-            console.log("Signup successful:", data)
-            console.log("User session token:", data['access_token'])
+            // Store the access token in local storage
+            console.log("Signup successful:")
             localStorage.setItem("accessToken", data['access_token'])
-
-            navigate('/home')
+            // Navigate to the home page and replace the current entry in the history stack
+            navigate('/home', { replace: true })
         }
     }
     catch (error) {

@@ -2,8 +2,8 @@ from langchain.tools import tool
 from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
-from backend.app.core.cache import resume_store
-from backend.app.core.cache import latest_cv
+from app.core.cache import resume_store
+from app.core.cache import latest_cv
 @tool
 def generate_cover_letter(job_description):
     """

@@ -20,7 +20,6 @@ async def call_agent(data: ChatInput):
     user_id = data.user_id
     user_input = data.user_input
     resume = resume_store.get(user_id, "No resume found.")
-    print("I am in the chat endpoint this is the resume", resume)
 
     if resume == "No resume found.":
         return {"error": "No resume found."}

@@ -1,6 +1,6 @@
 from requests import session
 
-from backend.app.auth.user_auth import sign_up
+from app.auth.user_auth import sign_up
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 

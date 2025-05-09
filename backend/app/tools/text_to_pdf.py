@@ -1,5 +1,5 @@
 from langchain.tools import tool
-from backend.app.core.cache import latest_cv
+from app.core.cache import latest_cv
 from fpdf import FPDF
 import uuid
 import os

@@ -1,15 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import {useState, useEffect} from "react"
 import ResumeUpload from "../components/ResumeUpload"
 import ChatWindow from "../components/ChatWindow"
 import ProfileIcon from "../components/ProfileIcon.jsx" // Assuming you have a ProfileIcon component
+import Spinner from "../components/Spinner.jsx";
 
 const Home = () => {
-
-    const isGuest= localStorage.getItem("isGuest") === "true"
-    const hasResume = localStorage.getItem("hasResume") === "true"
-    const [resumeUploaded, setResumeUploaded] = useState(hasResume)
+    const [loading, setLoading] = useState(true)
+    const [resumeUploaded, setResumeUploaded] = useState(false)
     const [messages, setMessages] = useState([
         {
             sender: "agent",
@@ -17,9 +16,17 @@ const Home = () => {
         },
     ])
 
+    useEffect(() => {
+        const isGuest = localStorage.getItem("isGuest") === "true"
+        const hasResume = localStorage.getItem("hasResume") === "true"
+        setResumeUploaded(hasResume)
+        setLoading(false)
+    }, [])
+
+
     const handleResumeUpload = () => {
         setResumeUploaded(true)
-        localStorage.setItem("hasResume", true)
+        localStorage.setItem("hasResume", "true")
         setMessages([
             ...messages,
             {
@@ -28,22 +35,26 @@ const Home = () => {
             },
         ])
     }
+    if (loading) {
+        return <Spinner/>
+    }
 
     return (
+
         <div className="container mx-auto max-w-4xl p-4 relative">
             <header className="mb-8 text-center">
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">AI Career Copilot</h1>
                 <p className="text-gray-600">Your personal assistant for career growth and job applications</p>
                 <div className="absolute top-4 right-4">
-                    <ProfileIcon />
+                    <ProfileIcon/>
                 </div>
             </header>
 
             <main className="bg-white rounded-lg shadow-md p-6">
                 {!resumeUploaded ? (
-                    <ResumeUpload onUploadSuccess={handleResumeUpload} />
+                    <ResumeUpload onUploadSuccess={handleResumeUpload}/>
                 ) : (
-                    <ChatWindow initialMessages={messages} setMessages={setMessages} />
+                    <ChatWindow initialMessages={messages} setMessages={setMessages}/>
                 )}
             </main>
 
