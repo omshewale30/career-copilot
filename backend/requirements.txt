@@ -11,3 +11,5 @@ supabase
 python-multipart
 starlette
 typing-extensions
+fpdf
+
