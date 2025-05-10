@@ -25,6 +25,8 @@ origins = [
     "https://localhost.tiangolo.com",
     "http://localhost",
     "http://localhost:5173",
+    "https://career-copilot-nu.vercel.app",
+    "https://career-copilot-frontend-ze2k7.kinsta.app"
 ]
 
 app.add_middleware(
