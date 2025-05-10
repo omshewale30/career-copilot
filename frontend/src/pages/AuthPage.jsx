@@ -17,6 +17,7 @@ const AuthPage = () => {
     const accessToken = localStorage.getItem("accessToken")
     if (accessToken) {
       // User is already logged in, redirect to home page
+
       navigate('/home', { replace: true })
     }
   })
@@ -83,15 +84,23 @@ const AuthPage = () => {
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
+    
     console.log("Signup submitted:", signupData)
     try{
         const data = await signUp(signupData.firstName, signupData.lastName,signupData.email, signupData.password)
         if (data) {
-            // Store the access token in local storage
-            console.log("Signup successful:")
-            localStorage.setItem("accessToken", data['access_token'])
-            // Navigate to the home page and replace the current entry in the history stack
-            navigate('/home', { replace: true })
+            console.log("Signup successful:", data)
+            if (data.user.email_verification_required) {
+                // Show success message about email verification
+                setSignupError("Please check your email to verify your account before logging in.")
+                setActiveTab("login")
+            } else {
+                // Store the access token in local storage
+                localStorage.setItem("accessToken", data['access_token'])
+                setActiveTab("login")
+                // Navigate to the home page and replace the current entry in the history stack
+                navigate('/auth', { replace: true })
+            }
         }
     }
     catch (error) {

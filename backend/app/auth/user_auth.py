@@ -10,7 +10,7 @@ key: str = os.getenv("SUPABASE_KEY")
 
 supabase: Client = create_client(url, key)
 
-def sign_up(f_name, l_name, email, password, redirect_url):
+def sign_up(f_name, l_name, email, password, redirect_url = "https://career-copilot-nu.vercel.app/"):
     """
     Sign up a new user with email and password.
 
@@ -52,12 +52,13 @@ def sign_up(f_name, l_name, email, password, redirect_url):
         if not res.data:
             raise Exception("Failed to create user profile")
 
-        # Return user info, access token (if available), and profile
+        # Return user info and profile, but indicate that email verification is required
         return {
             "id": data.user.id,
             "email": data.user.email,
-            "created_at": data.user.created_at
-        }, data.session.access_token if data.session else None, res.data[0]
+            "created_at": data.user.created_at,
+            "email_verification_required": True
+        }, None, res.data[0]
 
     except Exception as e:
         raise Exception(f"Signup failed: {str(e)}")

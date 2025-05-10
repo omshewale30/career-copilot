@@ -26,7 +26,6 @@ def user_sign_up(user: User):
             user.last_name, 
             user.email, 
             user.password, 
-            "https://career-copilot-nu.vercel.app/"
         )
         
         if not user_info:
