@@ -1,3 +1,5 @@
+import { getApiEndpoint } from './config'
+
 /**
  * Uploads a resume file to the backend
  * @param {File} file - The resume PDF file
@@ -8,15 +10,13 @@ export const uploadResume = async (file) => {
     formData.append("file", file)
     const token = localStorage.getItem("accessToken")
 
-    const response = await fetch("http://localhost:8000/resume/upload", {
-
+    const response = await fetch(getApiEndpoint("resume/upload"), {
         method: "POST",
         headers: {
             Authorization: `Bearer ${token}`,
         },
         body: formData,
     })
-
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))

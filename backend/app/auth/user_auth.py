@@ -22,31 +22,45 @@ def sign_up(f_name, l_name, email, password, redirect_url):
         redirect_url (str): URL to redirect to after sign up.
 
     Returns:
-        dict: Response from the Supabase API.
-
+        tuple: (user_info, access_token, profile)
     """
-    # Sign up the user
-    data = supabase.auth.sign_up({
-        'email': email,
-        'password': password,
-        'options': {
-            'email_redirect_to': redirect_url,
-        },
-    })
-    if data.user:
+    try:
+        # Sign up the user
+        data = supabase.auth.sign_up({
+            'email': email,
+            'password': password,
+            'options': {
+                'email_redirect_to': redirect_url,
+            },
+        })
+
+        if not data or not data.user:
+            raise Exception("Failed to create user account")
+
         # insert user into profiles table
         user_id = data.user.id
+        profile_data = {
+            "id": user_id,
+            "has_resume": False,
+            "first_name": f_name,
+            "last_name": l_name,
+            "email": email,
+        }
 
-        res = supabase.table("profiles").insert(
-            {"id": user_id,
-             "has_resume": False,
-                "first_name": f_name,
-                "last_name": l_name,
-                "email": email,
-             }
-        ).execute()
+        res = supabase.table("profiles").insert(profile_data).execute()
 
-    return data.user, data.session.access_token, res.data[0] if res.data else None
+        if not res.data:
+            raise Exception("Failed to create user profile")
+
+        # Return user info, access token (if available), and profile
+        return {
+            "id": data.user.id,
+            "email": data.user.email,
+            "created_at": data.user.created_at
+        }, data.session.access_token if data.session else None, res.data[0]
+
+    except Exception as e:
+        raise Exception(f"Signup failed: {str(e)}")
 
 def sign_in(email, password):
     """

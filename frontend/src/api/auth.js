@@ -1,8 +1,7 @@
-
-
+import { getApiEndpoint } from './config'
 
 export const signUp = async (firstName, lastName, email, password) => {
-    const response = await fetch("http://localhost:8000/auth/signup", {
+    const response = await fetch(getApiEndpoint("auth/signup"), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -14,6 +13,8 @@ export const signUp = async (firstName, lastName, email, password) => {
             password: password,
         }),
     })
+    
+
 
     if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
@@ -24,7 +25,7 @@ export const signUp = async (firstName, lastName, email, password) => {
 }
 
 export const signIn = async (email, password) => {
-    const response = await fetch("http://localhost:8000/auth/signin", {
+    const response = await fetch(getApiEndpoint("auth/signin"), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

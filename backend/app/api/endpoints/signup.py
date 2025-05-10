@@ -15,13 +15,27 @@ class User(BaseModel):
 router = APIRouter()
 
 @router.post("/signup")
-def user_sign_up(user:User):
+def user_sign_up(user: User):
     """
     Sign up a new user.
     """
     try:
         # Call the signup function from the auth module
-        user_info, access_token, profile =sign_up(user.first_name, user.last_name, user.email, user.password, "http://localhost:3000")
-        return {"user": user_info,"access_token":access_token,  "profile": profile}
+        user_info, access_token, profile = sign_up(
+            user.first_name, 
+            user.last_name, 
+            user.email, 
+            user.password, 
+            "https://career-copilot-frontend-ze2k7.kinsta.app"
+        )
+        
+        if not user_info:
+            raise HTTPException(status_code=400, detail="Failed to create user account")
+            
+        return {
+            "user": user_info,
+            "access_token": access_token,
+            "profile": profile
+        }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

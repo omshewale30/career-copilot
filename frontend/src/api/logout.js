@@ -1,6 +1,7 @@
+import { getApiEndpoint } from './config'
 
 export const logout = async () => {
-    const response = await fetch("http://localhost:8000/logout/", {
+    const response = await fetch(getApiEndpoint("logout/"), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
