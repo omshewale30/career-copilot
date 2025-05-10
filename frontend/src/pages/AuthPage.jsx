@@ -106,7 +106,6 @@ const AuthPage = () => {
     localStorage.setItem("isGuest", "true")
     localStorage.setItem("hasResume", "false")
     navigate('/home')
-    // Add your guest login logic here
   }
 
   return (
@@ -437,7 +436,7 @@ const AuthPage = () => {
             </div>
 
             {/* Guest Option */}
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <button
                 type="button"
                 onClick={handleGuestContinue}
@@ -446,7 +445,7 @@ const AuthPage = () => {
                 Continue as Guest
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 
