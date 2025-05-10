@@ -12,4 +12,17 @@ python-multipart
 starlette
 typing-extensions
 fpdf
+requests
+pathlib
+tempfile
+json
+uuid
+hashlib
+datetime
+subprocess
+duckduckgo-search
+scikit-learn
+beautifulsoup4
+playwright
+langchain-core
 
