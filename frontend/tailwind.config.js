@@ -8,47 +8,94 @@ module.exports = {
                 sans: ["Inter", "sans-serif"],
             },
             colors: {
-                border: "hsl(var(--border))",
-                input: "hsl(var(--input))",
-                ring: "hsl(var(--ring))",
-                background: "hsl(var(--background))",
-                foreground: "hsl(var(--foreground))",
+                // Base colors
+                background: "#0d1117",
+                foreground: "#e5e7eb",
+                
+                // Primary colors
                 primary: {
-                    DEFAULT: "hsl(var(--primary))",
-                    foreground: "hsl(var(--primary-foreground))",
+                    DEFAULT: "#6366f1",
+                    foreground: "#e5e7eb",
                 },
+                
+                // Secondary colors
                 secondary: {
-                    DEFAULT: "hsl(var(--secondary))",
-                    foreground: "hsl(var(--secondary-foreground))",
+                    DEFAULT: "#7c3aed",
+                    foreground: "#e5e7eb",
                 },
-                destructive: {
-                    DEFAULT: "hsl(var(--destructive))",
-                    foreground: "hsl(var(--destructive-foreground))",
-                },
-                muted: {
-                    DEFAULT: "hsl(var(--muted))",
-                    foreground: "hsl(var(--muted-foreground))",
-                },
+                
+                // Accent colors
                 accent: {
-                    DEFAULT: "hsl(var(--accent))",
-                    foreground: "hsl(var(--accent-foreground))",
+                    DEFAULT: "#2dd4bf",
+                    foreground: "#e5e7eb",
                 },
-                popover: {
-                    DEFAULT: "hsl(var(--popover))",
-                    foreground: "hsl(var(--popover-foreground))",
-                },
+                
+                // Card and surface colors
                 card: {
-                    DEFAULT: "hsl(var(--card))",
-                    foreground: "hsl(var(--card-foreground))",
+                    DEFAULT: "#161b22",
+                    foreground: "#e5e7eb",
+                },
+                
+                // Border colors
+                border: {
+                    DEFAULT: "rgba(229, 231, 235, 0.1)",
+                    hover: "rgba(229, 231, 235, 0.2)",
+                },
+                
+                // Input colors
+                input: {
+                    DEFAULT: "#161b22",
+                    foreground: "#e5e7eb",
+                },
+                
+                // Ring colors (for focus states)
+                ring: {
+                    DEFAULT: "#6366f1",
+                    hover: "#7c3aed",
+                },
+                
+                // Muted colors
+                muted: {
+                    DEFAULT: "rgba(229, 231, 235, 0.6)",
+                    foreground: "rgba(229, 231, 235, 0.8)",
+                },
+                
+                // Destructive colors (for errors, warnings)
+                destructive: {
+                    DEFAULT: "#ef4444",
+                    foreground: "#e5e7eb",
+                },
+                
+                // Popover colors
+                popover: {
+                    DEFAULT: "#161b22",
+                    foreground: "#e5e7eb",
                 },
             },
             borderRadius: {
-                lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
+                lg: "1rem",
+                md: "0.75rem",
+                sm: "0.5rem",
             },
             animation: {
                 "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                "blob": "blob 7s infinite",
+            },
+            keyframes: {
+                blob: {
+                    "0%": {
+                        transform: "translate(0px, 0px) scale(1)",
+                    },
+                    "33%": {
+                        transform: "translate(30px, -50px) scale(1.1)",
+                    },
+                    "66%": {
+                        transform: "translate(-20px, 20px) scale(0.9)",
+                    },
+                    "100%": {
+                        transform: "translate(0px, 0px) scale(1)",
+                    },
+                },
             },
         },
     },
