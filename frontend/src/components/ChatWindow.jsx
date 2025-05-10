@@ -186,8 +186,8 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
             </div>
 
             {/* Input Form */}
-            <form onSubmit={handleSubmit} className="border-t p-4 bg-white">
-                <div className="flex space-x-2">
+            <form onSubmit={handleSubmit} className="border border-gray-300 bg-background rounded-lg text-gray-100">
+                <div className="flex space-x-2 items-end p-1">
                     <textarea
                         ref={textareaRef}
                         value={input}
@@ -199,18 +199,23 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
                             }
                         }}
                         placeholder="Type your message..."
-                        className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[40px] max-h-[200px] overflow-y-auto"
+                        className="flex-1 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none min-h-[40px] max-h-[200px] overflow-y-auto"
                         disabled={loading}
                         rows={1}
                     />
                     <button
                         type="submit"
                         disabled={!input.trim() || loading}
-                        className={`px-4 py-2 rounded-md font-medium text-white ${
-                            !input.trim() || loading ? "bg-gray-400 cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
+                        className={`h-10 w-10 flex items-center justify-center rounded-full border border-gray-300 bg-white shadow transition ${
+                            !input.trim() || loading
+                                ? "text-gray-300 cursor-not-allowed"
+                                : "text-blue-600 hover:bg-gray-100 hover:text-blue-700"
                         }`}
+                        aria-label="Send"
                     >
-                        Send
+                        <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14M12 5l7 7-7 7" />
+                        </svg>
                     </button>
                 </div>
             </form>
