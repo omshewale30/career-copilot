@@ -1,7 +1,7 @@
 "use client"
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from "react"
-import { Eye, EyeOff, User, Mail, Lock, ArrowRight } from "lucide-react"
+import { Eye, EyeOff, User, Mail, Lock, ArrowRight, Briefcase } from "lucide-react"
 import {signUp} from "../api/auth.js";
 import {signIn} from "../api/auth.js";
 
@@ -110,15 +110,39 @@ const AuthPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 p-4">
-      <div className="w-full max-w-md">
+  
+    <div className="min-h-screen flex items-center justify-center bg-background p-4 text-foreground">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-20 left-20 w-96 h-96 bg-primary opacity-10 rounded-full blur-3xl animate-blob" />
+          <div className="absolute top-40 right-20 w-96 h-96 bg-secondary opacity-10 rounded-full blur-3xl animate-blob animation-delay-2000" />
+          <div className="absolute bottom-20 left-1/2 w-96 h-96 bg-accent opacity-10 rounded-full blur-3xl animate-blob animation-delay-4000" />
+        </div>
+      </div>
+
+      <div className="w-full max-w-md relative z-10">
+        {/* Logo and Title */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <Briefcase className="w-8 h-8 text-primary mr-2" />
+            <span className="text-2xl font-bold text-foreground bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary">
+              CareerCopilot
+            </span>
+          </div>
+          <p className="text-muted text-sm">Your AI-powered career companion</p>
+        </div>
+
         {/* Auth Card */}
-        <div className="bg-white rounded-xl shadow-xl overflow-hidden">
+        <div className="bg-card rounded-xl shadow-xl overflow-hidden border border-border">
           {/* Card Header with Tabs */}
-          <div className="flex border-b">
+    
+          <div className="flex border-b border-border">
             <button
               className={`flex-1 py-4 text-center font-medium transition-colors ${
-                activeTab === "login" ? "text-blue-600 border-b-2 border-blue-600" : "text-gray-500 hover:text-gray-700"
+                activeTab === "login" 
+                  ? "text-primary border-b-2 border-primary" 
+                  : "text-muted hover:text-foreground"
               }`}
               onClick={() => setActiveTab("login")}
             >
@@ -127,8 +151,8 @@ const AuthPage = () => {
             <button
               className={`flex-1 py-4 text-center font-medium transition-colors ${
                 activeTab === "signup"
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "text-primary border-b-2 border-primary"
+                  : "text-muted hover:text-foreground"
               }`}
               onClick={() => setActiveTab("signup")}
             >
@@ -142,12 +166,12 @@ const AuthPage = () => {
             {activeTab === "login" && (
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div className="space-y-1">
-                  <label htmlFor="login-email" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="login-email" className="text-sm font-medium text-foreground">
                     Email
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
+                      <Mail className="h-5 w-5 text-muted" />
                     </div>
                     <input
                       id="login-email"
@@ -156,19 +180,19 @@ const AuthPage = () => {
                       required
                       value={loginData.email}
                       onChange={handleLoginChange}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-3 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder="you@example.com"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="login-password" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="login-password" className="text-sm font-medium text-foreground">
                     Password
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
+                      <Lock className="h-5 w-5 text-muted" />
                     </div>
                     <input
                       id="login-password"
@@ -177,18 +201,18 @@ const AuthPage = () => {
                       required
                       value={loginData.password}
                       onChange={handleLoginChange}
-                      className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-10 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted hover:text-foreground transition-colors"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-5 w-5 text-gray-400" />
+                        <EyeOff className="h-5 w-5" />
                       ) : (
-                        <Eye className="h-5 w-5 text-gray-400" />
+                        <Eye className="h-5 w-5" />
                       )}
                     </button>
                   </div>
@@ -202,66 +226,89 @@ const AuthPage = () => {
                       type="checkbox"
                       checked={loginData.rememberMe}
                       onChange={handleLoginChange}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                     />
-                    <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                    <label htmlFor="remember-me" className="ml-2 block text-sm text-muted">
                       Remember me
                     </label>
                   </div>
 
                   <div className="text-sm">
-                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
                       Forgot password?
                     </a>
                   </div>
                 </div>
 
+                {loginError && (
+                  <div className="text-sm text-destructive">{loginError}</div>
+                )}
+
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-foreground bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
                   >
                     Login
                   </button>
                 </div>
               </form>
-              )}
-              {loginError && (
-              <div className="mt-4 text-sm text-red-600">{loginError}</div>
-              )}
-
+            )}
 
             {/* Signup Form */}
             {activeTab === "signup" && (
               <form onSubmit={handleSignupSubmit} className="space-y-4">
-                <div className="space-y-1">
-                  <label htmlFor="signup-name" className="text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <User className="h-5 w-5 text-gray-400" />
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label htmlFor="signup-firstname" className="text-sm font-medium text-foreground">
+                      First Name
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-muted" />
+                      </div>
+                      <input
+                        id="signup-firstname"
+                        name="firstName"
+                        type="text"
+                        required
+                        value={signupData.firstName}
+                        onChange={handleSignupChange}
+                        className="block w-full pl-10 pr-3 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        placeholder="John"
+                      />
                     </div>
-                    <input
-                      id="signup-name"
-                      name="name"
-                      type="text"
-                      required
-                      value={signupData.name}
-                      onChange={handleSignupChange}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="John Doe"
-                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label htmlFor="signup-lastname" className="text-sm font-medium text-foreground">
+                      Last Name
+                    </label>
+                    <div className="relative">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <User className="h-5 w-5 text-muted" />
+                      </div>
+                      <input
+                        id="signup-lastname"
+                        name="lastName"
+                        type="text"
+                        required
+                        value={signupData.lastName}
+                        onChange={handleSignupChange}
+                        className="block w-full pl-10 pr-3 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
+                        placeholder="Doe"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="signup-email" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="signup-email" className="text-sm font-medium text-foreground">
                     Email
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Mail className="h-5 w-5 text-gray-400" />
+                      <Mail className="h-5 w-5 text-muted" />
                     </div>
                     <input
                       id="signup-email"
@@ -270,19 +317,19 @@ const AuthPage = () => {
                       required
                       value={signupData.email}
                       onChange={handleSignupChange}
-                      className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-3 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder="you@example.com"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="signup-password" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="signup-password" className="text-sm font-medium text-foreground">
                     Password
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
+                      <Lock className="h-5 w-5 text-muted" />
                     </div>
                     <input
                       id="signup-password"
@@ -291,30 +338,30 @@ const AuthPage = () => {
                       required
                       value={signupData.password}
                       onChange={handleSignupChange}
-                      className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-10 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted hover:text-foreground transition-colors"
                       onClick={() => setShowPassword(!showPassword)}
                     >
                       {showPassword ? (
-                        <EyeOff className="h-5 w-5 text-gray-400" />
+                        <EyeOff className="h-5 w-5" />
                       ) : (
-                        <Eye className="h-5 w-5 text-gray-400" />
+                        <Eye className="h-5 w-5" />
                       )}
                     </button>
                   </div>
                 </div>
 
                 <div className="space-y-1">
-                  <label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">
+                  <label htmlFor="confirm-password" className="text-sm font-medium text-foreground">
                     Confirm Password
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Lock className="h-5 w-5 text-gray-400" />
+                      <Lock className="h-5 w-5 text-muted" />
                     </div>
                     <input
                       id="confirm-password"
@@ -323,18 +370,18 @@ const AuthPage = () => {
                       required
                       value={signupData.confirmPassword}
                       onChange={handleSignupChange}
-                      className="block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      className="block w-full pl-10 pr-10 py-2 bg-input border border-border rounded-md text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors"
                       placeholder="••••••••"
                     />
                     <button
                       type="button"
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-muted hover:text-foreground transition-colors"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="h-5 w-5 text-gray-400" />
+                        <EyeOff className="h-5 w-5" />
                       ) : (
-                        <Eye className="h-5 w-5 text-gray-400" />
+                        <Eye className="h-5 w-5" />
                       )}
                     </button>
                   </div>
@@ -348,44 +395,43 @@ const AuthPage = () => {
                     required
                     checked={signupData.agreeToTerms}
                     onChange={handleSignupChange}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
                   />
-                  <label htmlFor="agree-terms" className="ml-2 block text-sm text-gray-700">
+                  <label htmlFor="agree-terms" className="ml-2 block text-sm text-muted">
                     I agree to the{" "}
-                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
                       Terms of Service
                     </a>{" "}
                     and{" "}
-                    <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
                       Privacy Policy
                     </a>
                   </label>
                 </div>
 
+                {signupError && (
+                  <div className="text-sm text-destructive">{signupError}</div>
+                )}
+
                 <div>
                   <button
                     type="submit"
-                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                    className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-foreground bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
                   >
                     Create Account
                   </button>
                 </div>
               </form>
             )}
-            {signupError && (
-                <div className="mt-4 text-sm text-red-600">{signupError}</div>
-                )}
-
-
 
             {/* Divider */}
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-300"></div>
+                  <div className="w-full border-t border-border"></div>
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or</span>
+                  <span className="px-2 bg-card text-muted">Or</span>
                 </div>
               </div>
             </div>
@@ -395,7 +441,7 @@ const AuthPage = () => {
               <button
                 type="button"
                 onClick={handleGuestContinue}
-                className="w-full flex items-center justify-center py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="w-full flex items-center justify-center py-2 px-4 border border-border rounded-md shadow-sm text-sm font-medium text-foreground bg-card hover:bg-card/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
               >
                 Continue as Guest
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -405,14 +451,14 @@ const AuthPage = () => {
         </div>
 
         {/* Additional Info */}
-        <div className="mt-6 text-center text-sm text-gray-600">
+        <div className="mt-6 text-center text-sm text-muted">
           <p>
             By using this service, you agree to our{" "}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+            <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
               Terms of Service
             </a>{" "}
             and{" "}
-            <a href="#" className="font-medium text-blue-600 hover:text-blue-500">
+            <a href="#" className="font-medium text-primary hover:text-primary/80 transition-colors">
               Privacy Policy
             </a>
             .
