@@ -9,6 +9,7 @@ const ResumeUpload = ({ onUploadSuccess }) => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [uploadProgress, setUploadProgress] = useState(0)
+    
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0]

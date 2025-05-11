@@ -16,9 +16,9 @@ const AuthPage = () => {
     // Check if user is already logged in
     const accessToken = localStorage.getItem("accessToken")
     if (accessToken) {
-      // User is already logged in, redirect to home page
-
-      navigate('/home', { replace: true })
+      // User is already logged in, check if they have a resume
+      const hasResume = localStorage.getItem("hasResume") === "true"
+      navigate(hasResume ? '/chat' : '/resume-upload', { replace: true })
     }
   })
 
