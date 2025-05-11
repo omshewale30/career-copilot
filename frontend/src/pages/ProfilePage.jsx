@@ -7,6 +7,8 @@ import {getProfile} from "../api/profile.js";
 import {logout} from "../api/logout.js";
 import Spinner from "../components/Spinner.jsx";
 
+
+
 const ProfilePage = () => {
     const navigate = useNavigate()
     const [userData, setUserData] = useState({
