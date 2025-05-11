@@ -1,4 +1,4 @@
-import { getApiEndpoint } from './config'
+import { API_URL } from "./config"
 
 /**
  * Uploads a resume file to the backend
@@ -8,20 +8,37 @@ import { getApiEndpoint } from './config'
 export const uploadResume = async (file) => {
     const formData = new FormData()
     formData.append("file", file)
-    const token = localStorage.getItem("accessToken")
 
-    const response = await fetch(getApiEndpoint("resume/upload"), {
+    const response = await fetch(`${API_URL}resume/upload`, {
         method: "POST",
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
         body: formData,
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
     })
 
     if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.detail || "Failed to upload resume")
+        throw new Error("Failed to upload resume")
     }
 
-    return await response.json()
+    return response.json()
+}
+
+export const updateResume = async (file) => {
+    const formData = new FormData()
+    formData.append("file", file)
+
+    const response = await fetch(`${API_URL}resume/update`, {
+        method: "POST",
+        body: formData,
+        headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+        },
+    })
+
+    if (!response.ok) {
+        throw new Error("Failed to update resume")
+    }
+
+    return response.json()
 }

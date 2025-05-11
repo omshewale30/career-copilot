@@ -9,12 +9,17 @@ import Spinner from "../components/Spinner"
 const ChatWindowPage = () => {
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
-    const [messages, setMessages] = useState([
-        {
+    const [messages, setMessages] = useState(() => {
+        // Try to get messages from localStorage, if not found use default message
+        const savedMessages = localStorage.getItem("chatMessages")
+        if (savedMessages) {
+            return JSON.parse(savedMessages)
+        }
+        return [{
             sender: "agent",
             text: "Hello! I'm your AI career assistant. How can I help you with your career today? I can help with cover letters, identifying skill gaps, or providing career guidance.",
-        },
-    ])
+        }]
+    })
 
     useEffect(() => {
         const hasResume = localStorage.getItem("hasResume") === "true"
@@ -26,6 +31,11 @@ const ChatWindowPage = () => {
         
         setLoading(false)
     }, [navigate])
+
+    // Save messages to localStorage whenever they change
+    useEffect(() => {
+        localStorage.setItem("chatMessages", JSON.stringify(messages))
+    }, [messages])
 
     if (loading) {
         return <Spinner />

@@ -105,7 +105,7 @@ const ProfilePage = () => {
           </div>
           <div className="space-y-2">
             <button
-              onClick={() => navigate('/resume-upload')}
+              onClick={() => navigate('/resume-upload', { state: { isUpdate: true } })}
               className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground py-2 px-4 rounded-md transition-colors"
             >
               <svg 

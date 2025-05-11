@@ -1,15 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { uploadResume } from "../api/resume"
+import { uploadResume, updateResume } from "../api/resume"
 import { Upload, FileText, Loader2, AlertCircle, CheckCircle2 } from "lucide-react"
 import "../index.css"
-const ResumeUpload = ({ onUploadSuccess }) => {
+
+const ResumeUpload = ({ onUploadSuccess, isUpdate = false }) => {
     const [file, setFile] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [uploadProgress, setUploadProgress] = useState(0)
-    
 
     const handleFileChange = (e) => {
         const selectedFile = e.target.files[0]
@@ -49,7 +49,15 @@ const ResumeUpload = ({ onUploadSuccess }) => {
                 })
             }, 200)
 
-            const res = await uploadResume(file)
+            let res
+            if (isUpdate) {
+                res = await updateResume(file)
+                console.log("Updated resume", res)
+            } else {
+                res = await uploadResume(file)
+                console.log("Uploaded resume", res)
+            }
+
             clearInterval(progressInterval)
             setUploadProgress(100)
             
@@ -69,8 +77,15 @@ const ResumeUpload = ({ onUploadSuccess }) => {
         <div className="flex flex-col items-center p-6 bg-background min-h-screen">
             <div className="w-full max-w-2xl">
                 <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-foreground mb-2">Upload Your Resume</h2>
-                    <p className="text-muted">Upload your resume to get personalized career guidance</p>
+                    <h2 className="text-2xl font-bold text-foreground mb-2">
+                        {isUpdate ? "Update Your Resume" : "Upload Your Resume"}
+                    </h2>
+                    <p className="text-muted">
+                        {isUpdate 
+                            ? "Update your resume to get the latest career guidance"
+                            : "Upload your resume to get personalized career guidance"
+                        }
+                    </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -157,7 +172,7 @@ const ResumeUpload = ({ onUploadSuccess }) => {
                                     <span>Uploading...</span>
                                 </span>
                             ) : (
-                                "Upload Resume"
+                                isUpdate ? "Update Resume" : "Upload Resume"
                             )}
                         </button>
 
