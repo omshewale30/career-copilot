@@ -309,6 +309,121 @@ const LandingPage = () => {
                     </div>
                 </motion.section>
 
+                {/* Pricing Section */}
+                <motion.section
+                    id="pricing"
+                    className="py-20"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                >
+                    <div className="max-w-6xl mx-auto">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="text-center mb-16"
+                        >
+                            <h2 className="text-4xl md:text-5xl font-bold text-[#e5e7eb] mb-6">
+                                Simple, Transparent Pricing
+                            </h2>
+                            <p className="text-xl text-[#e5e7eb]/80 max-w-3xl mx-auto">
+                                Choose the plan that best fits your career development needs
+                            </p>
+                        </motion.div>
+
+                        <motion.div
+                            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.4 }}
+                        >
+                            {[
+                                {
+                                    name: "Starter",
+                                    price: "Free",
+                                    features: [
+                                        "Basic resume analysis",
+                                        "Limited AI chat support",
+                                        "Basic career insights",
+                                        "Community access"
+                                    ],
+                                    color: "from-[#6366f1]/20 to-[#6366f1]/10",
+                                    buttonColor: "from-[#6366f1] to-[#6366f1]"
+                                },
+                                {
+                                    name: "Starter",
+                                    price: "$5",
+                                    period: "/month",
+                                    features: [
+                                        "Advanced resume optimization",
+                                        "Unlimited AI chat support",
+                                        "Detailed skill gap analysis",
+                                        "Personalized career roadmap",
+                                        "Priority support"
+                                    ],
+                                    color: "from-[#7c3aed]/20 to-[#7c3aed]/10",
+                                    buttonColor: "from-[#7c3aed] to-[#7c3aed]",
+                                    popular: true
+                                },
+                                {
+                                    name: "Pro",
+                                    price: "12",
+                                    period: "/month",
+                                    features: [
+                                        "Everything in Professional",
+                                        "Custom AI model training",
+                                        "Team collaboration features",
+                                        "Custom integrations"
+                                    ],
+                                    color: "from-[#2dd4bf]/20 to-[#2dd4bf]/10",
+                                    buttonColor: "from-[#2dd4bf] to-[#2dd4bf]"
+                                }
+                            ].map((plan, index) => (
+                                <motion.div
+                                    key={index}
+                                    whileHover={{ y: -5 }}
+                                    className={`bg-gradient-to-br ${plan.color} backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300 relative`}
+                                >
+                                    {plan.popular && (
+                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#7c3aed] to-[#6366f1] text-white px-4 py-1 rounded-full text-sm font-medium">
+                                            Most Popular
+                                        </div>
+                                    )}
+                                    <h3 className="text-2xl font-bold text-[#e5e7eb] mb-2">{plan.name}</h3>
+                                    <div className="mb-6">
+                                        <span className="text-4xl font-bold text-[#e5e7eb]">{plan.price}</span>
+                                        {plan.period && (
+                                            <span className="text-[#e5e7eb]/60 ml-1">{plan.period}</span>
+                                        )}
+                                    </div>
+                                    <ul className="space-y-4 mb-8">
+                                        {plan.features.map((feature, idx) => (
+                                            <li key={idx} className="flex items-center text-[#e5e7eb]/80">
+                                                <svg className="w-5 h-5 text-[#2dd4bf] mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                                                </svg>
+                                                {feature}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <motion.button
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => navigate('/auth')}
+                                        className={`w-full py-3 bg-gradient-to-r ${plan.buttonColor} text-white font-medium rounded-lg hover:shadow-lg transition-all duration-300`}
+                                    >
+                                        Get Started
+                                    </motion.button>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    </div>
+                </motion.section>
+
                 {/* Footer */}
                 <footer className="mt-auto pt-8">
                     <div className="flex flex-col md:flex-row justify-between items-center border-t border-[#e5e7eb]/10 pt-6">

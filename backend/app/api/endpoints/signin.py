@@ -16,7 +16,12 @@ def user_sign_in(user: User):
     """
     try:
         # Call the sign_in function from the auth module
-        user,access_token, has_resume = sign_in(user.email, user.password)
-        return {"user": user, "access_token": access_token, "has_resume": has_resume}
+        loggedin_user, access_token, has_resume, tier = sign_in(user.email, user.password)
+        return {
+            "user": loggedin_user, 
+            "access_token": access_token, 
+            "has_resume": has_resume,
+            "tier": tier
+        }
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

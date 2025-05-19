@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Eye, EyeOff, User, Mail, Lock, ArrowRight, Briefcase } from "lucide-react"
 import {signUp} from "../api/auth.js";
 import {signIn} from "../api/auth.js";
+import { supabase } from '../lib/supabaseClient';
 
 const AuthPage = () => {
   const [activeTab, setActiveTab] = useState("login")
@@ -21,6 +22,12 @@ const AuthPage = () => {
       navigate(hasResume ? '/chat' : '/resume-upload', { replace: true })
     }
   })
+  useEffect(() => {
+    const script = document.createElement('script')
+    script.src = 'https://accounts.google.com/gsi/client'
+    script.async = true
+    document.body.appendChild(script)
+  }, [])
 
 
   // Login form state
@@ -65,27 +72,36 @@ const AuthPage = () => {
       if (data) {
         console.log("Login successful:", data)
 
-        // Store the access token in local storage
+        // Store the access token and user data in local storage
         localStorage.setItem("accessToken", data['access_token'])
         localStorage.setItem("hasResume", data['has_resume'])
-        localStorage.setItem("isGuest","false")
+        localStorage.setItem("isGuest", "false")
+        localStorage.setItem("tier", data['tier'])
+        localStorage.setItem("user_email", data['user']['email'])
 
-        // Redirect to the home page and replace the current entry in the history stack
-        navigate('/home', { replace: true })
+        // Check if user has a subscription (any tier)
+        const hasSubscription = data['tier'] !== null
+        if (hasSubscription) {
+          // If user has a subscription, check if they have a resume
+          if (data['has_resume']) {
+            navigate('/chat', { replace: true })
+          } else {
+            navigate('/resume-upload', { replace: true })
+          }
+        } else {
+          // If no subscription, redirect to pricing page
+          navigate('/pricing', { replace: true })
+        }
       }
-
     }
     catch (error) {
       console.error("Login error:", error)
-        setLoginError(error.message)
-      // Handle login error (e.g., show a message to the user)
+      setLoginError(error.message)
     }
   }
 
   const handleSignupSubmit = async (e) => {
     e.preventDefault()
-    
-    console.log("Signup submitted:", signupData)
     try{
         const data = await signUp(signupData.firstName, signupData.lastName,signupData.email, signupData.password)
         if (data) {
@@ -97,6 +113,8 @@ const AuthPage = () => {
             } else {
                 // Store the access token in local storage
                 localStorage.setItem("accessToken", data['access_token'])
+                localStorage.setItem("hasAccess",false)
+
                 setActiveTab("login")
                 // Navigate to the home page and replace the current entry in the history stack
                 navigate('/auth', { replace: true })
@@ -116,6 +134,85 @@ const AuthPage = () => {
     localStorage.setItem("hasResume", "false")
     navigate('/home')
   }
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/auth/callback'
+        }
+      });
+
+      if (error) throw error;
+    } catch (error) {
+      console.error('Error signing in with Google:', error.message);
+      setLoginError('Failed to sign in with Google');
+    }
+  };
+
+  // Add this useEffect to handle the OAuth callback
+  useEffect(() => {
+    const handleAuthCallback = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      console.log("session", session)
+      
+      if (session) {
+        // First check if profile exists
+        const { data: existingProfile } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', session.user.id)
+          .single();
+
+        // Only insert if profile doesn't exist
+        if (!existingProfile) {
+          const { data: userData, error: userError } = await supabase
+            .from('profiles')
+            .insert([
+              {
+                id: session.user.id,
+                first_name: session.user.user_metadata.name.split(" ")[0],
+                last_name: session.user.user_metadata.name.split(" ")[1],
+                email: session.user.email,
+                has_resume: false,
+                tier: null,
+              }
+            ]).select();
+
+          if (userError) {
+            console.error('Error inserting user data:', userError.message);
+          }
+        }
+
+        // Get user profile data
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('has_resume, tier')
+          .eq('id', session.user.id)
+          .single();
+
+        // Store necessary data in localStorage
+        localStorage.setItem("accessToken", session.access_token);
+        localStorage.setItem("hasResume", profile?.has_resume || false);
+        localStorage.setItem("isGuest", "false");
+        localStorage.setItem("tier", profile?.tier || null);
+        localStorage.setItem("user_email", session.user.email);
+
+        // Redirect based on subscription and resume status
+        if (profile?.tier) {
+          navigate(profile.has_resume ? '/chat' : '/resume-upload', { replace: true });
+        } else {
+          navigate('/pricing', { replace: true });
+        }
+      }
+    };
+
+    // Check if we're on the callback page
+    if (window.location.pathname === '/auth/callback') {
+      handleAuthCallback();
+    }
+  }, [navigate]);
 
   return (
   
@@ -444,17 +541,21 @@ const AuthPage = () => {
               </div>
             </div>
 
-            {/* Guest Option */}
-            {/* <div className="mt-6">
+            {/* Google Sign In Button */}
+            <div className="mt-6">
               <button
-                type="button"
-                onClick={handleGuestContinue}
-                className="w-full flex items-center justify-center py-2 px-4 border border-border rounded-md shadow-sm text-sm font-medium text-foreground bg-card hover:bg-card/80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
+                onClick={handleGoogleSignIn}
+                className="w-full flex items-center justify-center gap-2 py-2 px-4 border border-border rounded-md shadow-sm text-sm font-medium text-black bg-white hover:bg-gray-100 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-300"
               >
-                Continue as Guest
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <img
+                  src="https://www.google.com/favicon.ico"
+                  alt="Google"
+                  className="w-5 h-5"
+                />
+                Sign in with Google
               </button>
-            </div> */}
+            </div>
+
           </div>
         </div>
 

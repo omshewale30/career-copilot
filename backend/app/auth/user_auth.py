@@ -29,9 +29,6 @@ def sign_up(f_name, l_name, email, password, redirect_url = "https://career-copi
         data = supabase.auth.sign_up({
             'email': email,
             'password': password,
-            'options': {
-                'email_redirect_to': redirect_url,
-            },
         })
 
         if not data or not data.user:
@@ -45,6 +42,8 @@ def sign_up(f_name, l_name, email, password, redirect_url = "https://career-copi
             "first_name": f_name,
             "last_name": l_name,
             "email": email,
+            "stripe_customer_id": None,
+            "has_access": False
         }
 
         res = supabase.table("profiles").insert(profile_data).execute()
@@ -80,13 +79,14 @@ def sign_in(email, password):
         'password': password,
     })
     if data.user:
+
         # check if user has resume and return the boolean value
         user_id = data.user.id
-        res = supabase.table("profiles").select("has_resume").eq("id", user_id).execute()
+        res = supabase.table("profiles").select("has_resume, tier").eq("id", user_id).execute()
         has_resume = res.data[0]["has_resume"] if res.data else None
+        tier = res.data[0]["tier"] if res.data else None
         # Check if the user has a resume
         if has_resume:
-    
             resume = supabase.table("resumes").select("content").eq("user_id", user_id).execute()
             if resume.data:
                 # Store the resume in the cache
@@ -95,8 +95,7 @@ def sign_in(email, password):
                 # If no resume is found, set it to None
                 resume_store["cur_user"] = None
 
-
-    return data.user,data.session.access_token ,res.data[0]["has_resume"] if res.data[0] else None
+    return data.user, data.session.access_token, has_resume, tier
 
 def getuser(request: Request):
     """
@@ -112,6 +111,5 @@ def getuser(request: Request):
         raise HTTPException(status_code=401, detail="Authorization header missing")
     jwt = auth_header.split(" ")[1]
     data = supabase.auth.get_user(jwt)
-    print(data.user)
 
     return data.user

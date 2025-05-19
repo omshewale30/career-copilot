@@ -6,6 +6,8 @@ from app.api.endpoints import user
 from app.api.endpoints import profile
 from app.api.endpoints import logout
 from app.api.endpoints import resume_update
+from app.api.endpoints import payments
+from app.api.endpoints import subscription
 router = APIRouter()
 
 router.include_router(resume.router, prefix="/resume", tags=["resume"])
@@ -16,4 +18,6 @@ router.include_router(user.router, prefix="/user", tags=["user"])
 router.include_router(profile.router, prefix="/profile", tags=["profile"])
 router.include_router(logout.router, prefix="/logout", tags=["logout"])
 router.include_router(resume_update.router, prefix="/resume", tags=["update"])
+router.include_router(payments.router, prefix="/payments", tags=["payments"])
+router.include_router(subscription.router, prefix="/subscription", tags=["subscription"])
 # router.include_router(suggestions.router, prefix="/suggestions", tags=["suggestions"])
