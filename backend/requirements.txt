@@ -19,4 +19,5 @@ beautifulsoup4
 playwright
 langchain-core
 pypdf 
+stripe
 
