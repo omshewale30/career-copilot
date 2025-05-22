@@ -1,19 +1,18 @@
 import json
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.responses import JSONResponse, RedirectResponse
-# from settings import settings
 import stripe, datetime, os
 from app.db.db import supabase
 from app.auth.user_auth import getuser
 from fastapi import Request
 from pydantic import BaseModel
+from app.config import settings
 
 router = APIRouter()
 
-endpoint_secret = os.getenv("STRIPE_WEBHOOK_SECRET")
 @router.post("/webhook")
 async def webhook(request:Request):
-    stripe.api_key = os.getenv("STRIPE_TEST_KEY")
+    stripe.api_key = settings.STRIPE_KEY
 
     payload = await request.body()
     event = None
@@ -23,49 +22,32 @@ async def webhook(request:Request):
         print('⚠️  Webhook error while parsing basic request.' + str(e))
         return JSONResponse(status_code=400, content={"error": str(e)})
     
-    if endpoint_secret:
+    if settings.WEBHOOK_SECRET:
         sig_header = request.headers.get("stripe-signature")
         try:
-            event = stripe.Webhook.construct_event(payload, sig_header, endpoint_secret)
+            event = stripe.Webhook.construct_event(payload, sig_header, settings.WEBHOOK_SECRET)
         except stripe.error.SignatureVerificationError as e:
             print('⚠️  Webhook error while validating signature.' + str(e))
             return JSONResponse(status_code=400, content={"error": str(e)})
         
-    data = event.data
-    event_type = event.type
-
+    # Get the event data from the event object
+    event_type = event["type"]
+    data = event["data"]["object"]
 
     try:
-        if event_type == "checkout.session.completed":
-            session = stripe.checkout.Session.retrieve(data.object.id)
-            print("This is the session:{}".format(session))
-            line_items = stripe.checkout.Session.list_line_items(data.object.id)
-            price_id = line_items.data[0].price.id
-            # Get price_id from the session's subscription data
-        
-            customer_id = session.customer
-            customer = stripe.Customer.retrieve(customer_id)
+        if event_type == "charge.succeeded" or event_type == "charge.updated":
+            customer_email = data['billing_details']['email']
 
-            #Create user if not exists
-            if price_id == "price_1ROrByAoomA59kINfDbWEENS":
-                tier = "starter"
-            elif price_id == "price_1ROrCRAoomA59kIN70kFdyV6":
-                tier = "pro"
-            else:
-                print(f"Unknown price_id: {price_id}")
-                return JSONResponse(status_code=400, content={"error": "Unknown price_id"})
-
-            user = supabase.table("profiles").select("*").eq("stripe_customer_id", customer_id).execute()
+            user = supabase.table("profiles").select("*").eq("email", customer_email).execute()
             if user.data:
-                print("User {} already exists".format(customer.email))
-                supabase.table("profiles").update({"tier": tier}).eq("id", user.data[0]["id"]).execute()
-                print("User {} updated to {}".format(customer.email, tier))
-            else:
-                supabase.table("profiles").update({'stripe_customer_id': customer_id, 'tier': tier}).eq("email", customer.email).execute()
-            print("User {} subscribed to {}".format(customer.email, tier))
+                print("User {} already exists".format(customer_email))
+                supabase.table("profiles").update({"tier": "pro"}).eq("id", user.data[0]["id"]).execute()
+                print("User {} updated to pro tier".format(customer_email))
+
+            print("User {} subscribed to pro tier".format(customer_email))
 
         elif event_type == "customer.subscription.canceled": #User cancelled subscription
-            subscription =  stripe.Subscription.retrieve(data.object.id) #Get subscription details
+            subscription =  stripe.Subscription.retrieve(data.id) #Get subscription details
             customer_id = subscription.customer #Get customer id
             user = supabase.table("profiles").select("*").eq("stripe_customer_id", customer_id).execute().data[0]#Get user details
             print("User {} cancelled subscription".format(user["id"]))

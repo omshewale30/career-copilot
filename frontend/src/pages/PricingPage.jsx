@@ -8,18 +8,11 @@ import Spinner from '../components/Spinner';
 
 export const plans = [
   {
-    name: "Starter",
-    link: "https://buy.stripe.com/test_cNidR81A58IL6dZcxl3gk01",
-    priceId: "price_1ROrByAoomA59kINfDbWEENS"
-  },
-  {
     name: "Pro",
-    link: "https://buy.stripe.com/test_cNidR81A58IL6dZcxl3gk01",
+    link: "https://buy.stripe.com/test_eVq4gybaF4sv9qbcxl3gk02",
     priceId: "price_1ROrCRAoomA59kIN70kFdyV6"
-
   }
 ]
-
 
 function PricingPage() {
   const navigate = useNavigate();
@@ -128,53 +121,8 @@ function PricingPage() {
           </p>
         </motion.div>
 
-        {/* Pricing Cards */}
-        {/*Free Tier*/}
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.2 }}
-          className="bg-gradient-to-br from-[#6366f1]/20 to-[#6366f1]/10 backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300"
-        >
-          <div className="mb-8">
-            <h2 className="text-2xl font-bold mb-2">Free</h2>
-          </div>
-          <ul className="space-y-4 mb-8">
-            {[
-              "Basic resume optimization",
-              "Unlimited AI chat support",
-              "Detailed skill gap analysis",
-              "Personalized career roadmap"
-            ].map((feature, index) => (
-              <motion.li
-                key={index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className="flex items-center text-[#e5e7eb]/80"
-              >
-                <Check className="w-5 h-5 text-[#2dd4bf] mr-3" />
-                {feature}
-              </motion.li>
-            ))}
-          </ul>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              handleFreePlan();
-            }}
-            className="w-full py-3 bg-gradient-to-r from-[#6366f1] to-[#6366f1] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#6366f1]/30 transition-all duration-300 flex items-center justify-center group"
-          >
-            Get Started
-            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-          </motion.button>
-        </motion.div>
-         
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          {/* Starter Plan */}
+          {/* Free Plan */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -182,10 +130,60 @@ function PricingPage() {
             className="bg-gradient-to-br from-[#6366f1]/20 to-[#6366f1]/10 backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300"
           >
             <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-2">Starter</h2>
+              <h2 className="text-2xl font-bold mb-2">Free</h2>
               <div className="flex items-baseline">
-                <span className="text-4xl font-bold">$5</span>
-                <span className="text-[#e5e7eb]/60 ml-2">/month</span>
+                <span className="text-4xl font-bold">$0</span>
+                <span className="text-[#e5e7eb]/60 ml-2">forever</span>
+              </div>
+            </div>
+
+            <ul className="space-y-4 mb-8">
+              {[
+                "Basic resume optimization",
+                "Limited AI chat support",
+                "Basic career insights",
+                "Community access"
+              ].map((feature, index) => (
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + index * 0.1 }}
+                  className="flex items-center text-[#e5e7eb]/80"
+                >
+                  <Check className="w-5 h-5 text-[#2dd4bf] mr-3" />
+                  {feature}
+                </motion.li>
+              ))}
+            </ul>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleFreePlan}
+              className="w-full py-3 bg-gradient-to-r from-[#6366f1] to-[#6366f1] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#6366f1]/30 transition-all duration-300 flex items-center justify-center group"
+            >
+              Get Started
+              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </motion.button>
+          </motion.div>
+
+          {/* Pro Plan */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2 }}
+            className="bg-gradient-to-br from-[#2dd4bf]/20 to-[#2dd4bf]/10 backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300 relative"
+          >
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#2dd4bf] to-[#6366f1] text-white px-4 py-1 rounded-full text-sm font-medium">
+              Best Value
+            </div>
+
+            <div className="mb-8">
+              <h2 className="text-2xl font-bold mb-2">Pro</h2>
+              <div className="flex items-baseline">
+                <span className="text-4xl font-bold">$7</span>
+                <span className="text-[#e5e7eb]/60 ml-2">one-time payment</span>
               </div>
             </div>
 
@@ -195,7 +193,8 @@ function PricingPage() {
                 "Unlimited AI chat support",
                 "Detailed skill gap analysis",
                 "Personalized career roadmap",
-                "Priority support"
+                "Priority support",
+                "Lifetime access"
               ].map((feature, index) => (
                 <motion.li
                   key={index}
@@ -214,58 +213,6 @@ function PricingPage() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => handleCheckoutStart(plans[0].link)}
-              className="w-full py-3 bg-gradient-to-r from-[#6366f1] to-[#6366f1] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#6366f1]/30 transition-all duration-300 flex items-center justify-center group"
-            >
-              Get Started
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </motion.button>
-          </motion.div>
-
-          {/* Pro Plan */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            className="bg-gradient-to-br from-[#2dd4bf]/20 to-[#2dd4bf]/10 backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300 relative"
-          >
-            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#2dd4bf] to-[#6366f1] text-white px-4 py-1 rounded-full text-sm font-medium">
-              Most Popular
-            </div>
-
-            <div className="mb-8">
-              <h2 className="text-2xl font-bold mb-2">Pro</h2>
-              <div className="flex items-baseline">
-                <span className="text-4xl font-bold">$12</span>
-                <span className="text-[#e5e7eb]/60 ml-2">/month</span>
-              </div>
-            </div>
-
-            <ul className="space-y-4 mb-8">
-              {[
-                "Everything in Starter",
-                "Custom AI model training",
-                "Team collaboration features",
-                "Custom integrations",
-                "Dedicated account manager",
-                "Advanced analytics dashboard"
-              ].map((feature, index) => (
-                <motion.li
-                  key={index}
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="flex items-center text-[#e5e7eb]/80"
-                >
-                  <Check className="w-5 h-5 text-[#2dd4bf] mr-3" />
-                  {feature}
-                </motion.li>
-              ))}
-            </ul>
-
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => handleCheckoutStart(plans[1].link)}
               className="w-full py-3 bg-gradient-to-r from-[#2dd4bf] to-[#6366f1] text-white font-medium rounded-lg hover:shadow-lg hover:shadow-[#2dd4bf]/30 transition-all duration-300 flex items-center justify-center group"
             >
               Get Started
@@ -285,21 +232,20 @@ function PricingPage() {
           <div className="space-y-6">
             {[
               {
-                question: "Can I change my plan later?",
-                answer: "Yes, you can upgrade or downgrade your plan at any time. Changes will be reflected in your next billing cycle."
+                question: "What's included in the Pro plan?",
+                answer: "The Pro plan includes unlimited AI chat support, advanced resume optimization, detailed skill gap analysis, personalized career roadmap, priority support, and lifetime access to all features."
               },
               {
                 question: "What payment methods do you accept?",
-
                 answer: "We accept all major credit cards and PayPal. All payments are processed securely through Stripe."
               },
               {
-                question: "Is there a free trial?",
-                answer: "Yes, we offer a 14-day free trial for both plans. No credit card required to start."
+                question: "Is the Pro plan really a one-time payment?",
+                answer: "Yes! The Pro plan is a one-time payment of $7 that gives you lifetime access to all premium features."
               },
               {
-                question: "Can I cancel my subscription?",
-                answer: "Yes, you can cancel your subscription at any time. You'll continue to have access until the end of your billing period."
+                question: "Can I upgrade from Free to Pro later?",
+                answer: "Yes, you can upgrade to the Pro plan at any time to get access to all premium features."
               }
             ].map((faq, index) => (
               <motion.div

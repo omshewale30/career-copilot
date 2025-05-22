@@ -335,7 +335,7 @@ const LandingPage = () => {
                         </motion.div>
 
                         <motion.div
-                            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+                            className="grid grid-cols-1 md:grid-cols-2 gap-8"
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
@@ -343,7 +343,7 @@ const LandingPage = () => {
                         >
                             {[
                                 {
-                                    name: "Starter",
+                                    name: "Free",
                                     price: "Free",
                                     features: [
                                         "Basic resume analysis",
@@ -355,32 +355,20 @@ const LandingPage = () => {
                                     buttonColor: "from-[#6366f1] to-[#6366f1]"
                                 },
                                 {
-                                    name: "Starter",
-                                    price: "$5",
-                                    period: "/month",
+                                    name: "Pro",
+                                    price: "$7",
+                                    period: "one-time",
                                     features: [
                                         "Advanced resume optimization",
                                         "Unlimited AI chat support",
                                         "Detailed skill gap analysis",
                                         "Personalized career roadmap",
-                                        "Priority support"
-                                    ],
-                                    color: "from-[#7c3aed]/20 to-[#7c3aed]/10",
-                                    buttonColor: "from-[#7c3aed] to-[#7c3aed]",
-                                    popular: true
-                                },
-                                {
-                                    name: "Pro",
-                                    price: "12",
-                                    period: "/month",
-                                    features: [
-                                        "Everything in Professional",
-                                        "Custom AI model training",
-                                        "Team collaboration features",
-                                        "Custom integrations"
+                                        "Priority support",
+                                        "Lifetime access"
                                     ],
                                     color: "from-[#2dd4bf]/20 to-[#2dd4bf]/10",
-                                    buttonColor: "from-[#2dd4bf] to-[#2dd4bf]"
+                                    buttonColor: "from-[#2dd4bf] to-[#6366f1]",
+                                    popular: true
                                 }
                             ].map((plan, index) => (
                                 <motion.div
@@ -389,8 +377,8 @@ const LandingPage = () => {
                                     className={`bg-gradient-to-br ${plan.color} backdrop-blur-lg rounded-2xl p-8 border border-[#e5e7eb]/10 hover:border-[#e5e7eb]/20 transition-all duration-300 relative`}
                                 >
                                     {plan.popular && (
-                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#7c3aed] to-[#6366f1] text-white px-4 py-1 rounded-full text-sm font-medium">
-                                            Most Popular
+                                        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#2dd4bf] to-[#6366f1] text-white px-4 py-1 rounded-full text-sm font-medium">
+                                            Best Value
                                         </div>
                                     )}
                                     <h3 className="text-2xl font-bold text-[#e5e7eb] mb-2">{plan.name}</h3>
