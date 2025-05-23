@@ -24,32 +24,17 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Get environment
-ENV = os.getenv("ENVIRONMENT", "development")
 
 # Define allowed origins based on environment
-if ENV == "production":
-    origins = [
-        "https://career-copilot-nu.vercel.app",
-        "https://career-copilot-frontend-ze2k7.kinsta.app",
-        "https://career-copilot-backend-ze2k7.kinsta.app"
-    ]
-else:
-    origins = [
-        "http://localhost:5173",
-        "http://localhost:3000",
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:3000"
-    ]
+origins = ["*"]
 
 # Add CORS middleware with environment-specific configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+    allow_methods=["*"],
     allow_headers=["*"],
-    max_age=3600,
 )
 
 app.include_router(api_router)
