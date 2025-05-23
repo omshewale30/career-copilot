@@ -11,6 +11,7 @@ export const uploadResume = async (file) => {
 
     const response = await fetch(`${API_URL}resume/upload`, {
         method: "POST",
+        credentials: "include",
         headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
@@ -30,6 +31,7 @@ export const updateResume = async (file) => {
 
     const response = await fetch(`${API_URL}resume/update`, {
         method: "POST",
+        credentials: "include",
         body: formData,
         headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,

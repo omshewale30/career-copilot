@@ -26,15 +26,24 @@ app = FastAPI(
 
 
 # Define allowed origins based on environment
-origins = ["*"]
+origins = [
+    "https://career-copilot-nu.vercel.app",
+    "https://career-copilot-frontend-ze2k7.kinsta.app",
+    "https://career-copilot-backend-ze2k7.kinsta.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000"
+]
 
 # Add CORS middleware with environment-specific configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     allow_headers=["*"],
+    max_age=3600,
 )
 
 app.include_router(api_router)
