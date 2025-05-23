@@ -8,17 +8,6 @@ from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
-@router.options("/upload")
-async def options_upload():
-    return Response(
-        status_code=200,
-        headers={
-            "Access-Control-Allow-Origin": "https://career-copilot-nu.vercel.app",
-            "Access-Control-Allow-Methods": "POST, OPTIONS",
-            "Access-Control-Allow-Headers": "Content-Type, Authorization",
-            "Access-Control-Allow-Credentials": "true",
-        }
-    )
 
 @router.post("/upload")
 async def upload_resume(request: Request, file: UploadFile = File(...)):

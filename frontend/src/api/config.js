@@ -3,6 +3,7 @@ const isDevelopment = import.meta.env.MODE === 'development';
 console.log("This is the isDevelopment: ", isDevelopment);
 console.log("Current mode: ", import.meta.env.MODE);
 
+
 // API URLs
 const API_URLS = {
   development: "http://localhost:8000/",
