@@ -11,11 +11,10 @@ export const uploadResume = async (file) => {
 
     const response = await fetch(`${API_URL}resume/upload`, {
         method: "POST",
-        credentials: "include",
-        body: formData,
         headers: {
             Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
         },
+        body: formData
     })
 
     if (!response.ok) {
