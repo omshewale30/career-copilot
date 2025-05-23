@@ -1,10 +1,15 @@
 from contextlib import asynccontextmanager
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from app.api.routes import router as api_router
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+import logging
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -19,15 +24,25 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Define allowed origins
-origins = [
-    "http://localhost:5173",
-    "https://career-copilot-nu.vercel.app",
-    "https://career-copilot-frontend-ze2k7.kinsta.app",
-    "https://career-copilot-backend-ze2k7.kinsta.app"
-]
+# Get environment
+ENV = os.getenv("ENVIRONMENT", "development")
 
-# Add CORS middleware with specific configuration
+# Define allowed origins based on environment
+if ENV == "production":
+    origins = [
+        "https://career-copilot-nu.vercel.app",
+        "https://career-copilot-frontend-ze2k7.kinsta.app",
+        "https://career-copilot-backend-ze2k7.kinsta.app"
+    ]
+else:
+    origins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000"
+    ]
+
+# Add CORS middleware with environment-specific configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -37,6 +52,15 @@ app.add_middleware(
     expose_headers=["*"],
     max_age=3600,
 )
+
+# Add request logging middleware
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info(f"Request: {request.method} {request.url}")
+    logger.info(f"Headers: {request.headers}")
+    response = await call_next(request)
+    logger.info(f"Response status: {response.status_code}")
+    return response
 
 app.include_router(api_router)
 
