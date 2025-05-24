@@ -158,7 +158,11 @@ const ChatWindow = ({ initialMessages, setMessages }) => {
             {/* Messages Container */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
                 {localMessages.map((message, index) => (
-                    <MessageBubble key={index} message={message} />
+                    <MessageBubble
+                        key={index}
+                        message={message}
+                        previousSender={index > 0 ? localMessages[index - 1].sender : null}
+                    />
                 ))}
 
                 {loading && (
