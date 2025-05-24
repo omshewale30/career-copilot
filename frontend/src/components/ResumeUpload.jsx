@@ -63,6 +63,7 @@ const ResumeUpload = ({ onUploadSuccess, isUpdate = false }) => {
             
             // Small delay to show 100% progress
             setTimeout(() => {
+                localStorage.setItem("fromResumeUpload", "true")
                 onUploadSuccess()
             }, 500)
         } catch (err) {

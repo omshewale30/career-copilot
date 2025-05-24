@@ -58,6 +58,7 @@ const ProfilePage = () => {
   })
   const [loading, setLoading] = useState(true)
   const tier = localStorage.getItem("tier") || "free"
+  const fromResumeUpload = localStorage.getItem("fromResumeUpload") === "true"
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -93,6 +94,15 @@ const ProfilePage = () => {
     navigate("/auth", { replace: true })
   }
 
+  const handleBack = () => {
+    if (fromResumeUpload) {
+      localStorage.removeItem("fromResumeUpload")
+      navigate("/chat")
+    } else {
+      navigate(-1)
+    }
+  }
+
   const formatDate = (dateString) => {
     if (!dateString) return "N/A"
     const date = new Date(dateString)
@@ -117,7 +127,7 @@ const ProfilePage = () => {
         {/* Header with back button */}
         <div className="flex items-center mb-8 backdrop-blur-sm bg-[#0f172a]/30 p-4 rounded-2xl border border-[#1e293b]/50">
           <button
-            onClick={() => navigate(-1)}
+            onClick={handleBack}
             className="p-2 rounded-full hover:bg-[#1e293b]/50 transition-all duration-300 ease-in-out"
             aria-label="Go back"
           >
