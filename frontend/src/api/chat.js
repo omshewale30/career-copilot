@@ -6,7 +6,7 @@
  * 
  * 
  */
-const API_URL = "https://career-copilot-backend-ze2k7.kinsta.app/"
+import { API_URL } from "./config"
 
 export const submitChat = async (userInput) => {
     const response = await fetch(API_URL + "chat/submit", {
