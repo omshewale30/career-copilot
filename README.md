@@ -8,6 +8,8 @@ Career Copilot AI is an intelligent career guidance platform that helps users na
 - **Resume Analysis**: Upload and analyze your resume for improvements
 - **Interactive Chat Interface**: Engage with an AI agent for career-related queries
 - **Modern UI/UX**: Built with React and Tailwind CSS for a seamless experience
+- **Premium Features**: Access advanced AI capabilities and extended usage through our paid tier
+- **Secure Payments**: Integrated Stripe payment processing for premium subscriptions
 
 ## 🛠️ Tech Stack
 
@@ -26,6 +28,7 @@ Career Copilot AI is an intelligent career guidance platform that helps users na
 - Supabase
 - PDF Processing (PyPDF2)
 - Web Scraping (BeautifulSoup4, Playwright)
+- Stripe Payment Integration
 
 ## 📋 Prerequisites
 
@@ -60,6 +63,8 @@ Career Copilot AI is an intelligent career guidance platform that helps users na
    OPENAI_API_KEY=your_openai_api_key
    SUPABASE_URL=your_supabase_url
    SUPABASE_KEY=your_supabase_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
    ```
 
 5. Run the backend server:
@@ -91,12 +96,15 @@ Career Copilot AI is an intelligent career guidance platform that helps users na
 OPENAI_API_KEY=your_openai_api_key
 SUPABASE_URL=your_supabase_url
 SUPABASE_KEY=your_supabase_key
+STRIPE_SECRET_KEY=your_stripe_secret_key
+STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
 ```
 
 ### Frontend (.env)
 ```
 VITE_SUPABASE_URL=your_supabase_url
 VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
 ```
 
 ## 📁 Project Structure
