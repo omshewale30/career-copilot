@@ -10,7 +10,7 @@ const MessageBubble = ({ message, previousSender }) => {
         // User message: right, bubble, dark bg, white text, smaller font
         return (
             <div className={`flex justify-end ${baseMargin} ${extraTopMargin}`}>
-                <div className="max-w-[75%] bg-gray-800 text-white rounded-full px-6 py-3 text-sm leading-relaxed font-sans shadow-md">
+                <div className="max-w-[75%] min-w-0 bg-gray-800 text-white rounded-2xl px-6 py-3 text-sm leading-relaxed font-sans shadow-md break-words whitespace-pre-line">
                     <ReactMarkdown>{message.text}</ReactMarkdown>
                     {message.component && (
                         <div className="mt-4">{message.component}</div>
